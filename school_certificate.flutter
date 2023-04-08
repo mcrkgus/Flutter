@@ -1,0 +1,121 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: '학교 인증',
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('학교 인증'),
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(1),
+              child: SizedBox(),
+          ),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        body: Column(
+          children: [
+            SizedBox(
+              height: 24),
+              //width: 240,
+              //child:
+              ElevatedButton(
+                onPressed: () {
+                  // 버튼을 눌렀을 때 수행할 작업
+                },
+                child: Image(
+                  image: AssetImage('repo/images/card.png'),
+                  fit: BoxFit.contain,
+                  width: 130,
+                ),
+              ),
+            //),
+            Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 21.0, top: 10.0),
+                  child: Expanded(
+                    child: Stack(
+                      children: [
+                        Image(
+                          image: AssetImage('repo/images/card.png'),
+                          height: 100,
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 2.0,
+                          left: 2.0,
+                          child: Icon(
+                            Icons.task_alt,
+                            color: Colors.blue,
+                            size: 22.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 21.0, top: 10.0),
+                  child: Expanded(
+                    child: Stack(
+                      children: [
+                        Image(
+                          image: AssetImage('repo/images/card.png'),
+                          height: 100,
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 2.0,
+                          left: 2.0,
+                          child: Icon(
+                            Icons.clear,
+                            color: Colors.red,
+                            size: 22.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 21.0, top: 10.0),
+                  child: Expanded(
+                    child: Stack(
+                      children: [
+                        Image(
+                          image: AssetImage('repo/images/card.png'),
+                          height: 100,
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 2.0,
+                          left: 2.0,
+                          child: Icon(
+                            Icons.clear,
+                            color: Colors.red,
+                            size: 22.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
