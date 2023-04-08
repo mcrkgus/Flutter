@@ -1,0 +1,113 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: PhoneVerificationScreen(),
+    );
+  }
+}
+
+class PhoneVerificationScreen extends StatefulWidget {
+  @override
+  _PhoneVerificationScreenState createState() => _PhoneVerificationScreenState();
+}
+
+class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
+  String _phoneNumber = '';
+  String _verificationCode = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('휴대전화 인증'),
+        leading:  IconButton(
+            onPressed: () {
+              Navigator.pop(context); //뒤로가기
+            },
+            color: Colors.black,
+            icon: Icon(Icons.arrow_back)),
+      ) ,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top:18.0, left: 15.0, right: 15.0),
+            child: Text(
+              '인증을 위해 휴대전화번호를 입력해주세요.',
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top:5.0, bottom: 4.0, left: 15.0, right: 15.0),
+            child: TextField(
+              keyboardType: TextInputType.phone,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(11),
+              ],
+              decoration: InputDecoration(
+                hintText: '핸드폰 번호 입력 ( - 제외)',
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _phoneNumber = value;
+                });
+              },
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(bottom: 1.0,  left: 15.0),
+            child: ElevatedButton(
+              onPressed: () {},
+              child: Text('인증번호 전송'),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(15.0),
+            child: Text(
+              '인증번호를 입력해주세요.',
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(15.0),
+            child: TextField(
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(6),
+              ],
+              decoration: InputDecoration(
+                hintText: '인증번호를 입력해주세요.',
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _verificationCode = value;
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
