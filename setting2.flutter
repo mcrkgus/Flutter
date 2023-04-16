@@ -1,0 +1,271 @@
+
+import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFF6ACA89),
+        title: Text('설정'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+      body: ListView(
+        children: [
+          ListTile(
+            title: Text('공지사항'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NoticePage()),
+              );
+            },
+          ),
+          Divider(
+            color: Colors.grey[400],
+            height: 1,
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
+          ListTile(
+            title: Text('Q&A'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => QAPage()),
+              );
+            },
+          ),
+          Divider(
+            color: Colors.grey[400],
+            height: 1,
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
+          ListTile(
+            title: Text('알림설정'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NotificationPage()),
+              );
+            },
+          ),
+          Divider(
+            color: Colors.grey[400],
+            height: 1,
+            thickness: 1,
+            indent: 20,
+            endIndent: 20,
+          ),
+          ListTile(
+            title: Text('커뮤니티 이용규칙'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CommunityRulePage()),
+              );
+            },
+          ),
+          Divider(
+            color: Colors.grey[400],
+            height: 1,
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
+          ListTile(
+            title: Text('서비스 이용약관'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ServiceAgreementPage()),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class NoticePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('공지사항'),
+        backgroundColor: Color(0xFF6ACA89),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+      body: Center(
+        child: Text('공지사항 페이지'),
+      ),
+    );
+  }
+}
+
+class QAPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Q&A'),
+        backgroundColor: Color(0xFF6ACA89),
+      ),
+      body: Center(
+        child: Text('Q&A 페이지'),
+      ),
+    );
+  }
+}
+class NotificationPage extends StatefulWidget {
+  @override
+  _NotificationPageState createState() => _NotificationPageState();
+}
+
+class _NotificationPageState extends State<NotificationPage> {
+  bool _commentsSwitchValue = true;
+  bool _popularSwitchValue = true;
+  bool _chatSwitchValue = false;
+  bool _scheduleBriefingSwitchValue = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('알림설정'),
+        backgroundColor: Color(0xFF6ACA89),
+      ),
+      body: ListView(
+        children: [
+          ListTile(
+            title: Text('댓글'),
+            trailing: Switch(
+              value: _commentsSwitchValue,
+              onChanged: (value) {
+                setState(() {
+                  _commentsSwitchValue = value;
+                });
+              },
+            ),
+          ),
+          Divider(
+            color: Colors.grey[400],
+            height: 1,
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
+          ListTile(
+            title: Text('인기글'),
+            trailing: Switch(
+              value: _popularSwitchValue,
+              onChanged: (value) {
+                setState(() {
+                  _popularSwitchValue = value;
+                });
+              },
+            ),
+          ),
+          Divider(
+            color: Colors.grey[400],
+            height: 1,
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
+          ListTile(
+            title: Text('채팅'),
+            trailing: Switch(
+              value: _chatSwitchValue,
+              onChanged: (value) {
+                setState(() {
+                  _chatSwitchValue = value;
+                });
+              },
+            ),
+          ),
+          Divider(
+            color: Colors.grey[400],
+            thickness: 2,
+            indent: 10,
+            endIndent: 10,
+          ),
+
+          ListTile(
+            title: Text('일정 브리핑'),
+            trailing: Switch(
+              value: _scheduleBriefingSwitchValue,
+              onChanged: (value) {
+                setState(() {
+                  _scheduleBriefingSwitchValue = value;
+                });
+              },
+            ),
+          ),
+          Divider(
+            color: Colors.grey[400],
+            height: 1,
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
+        ],
+      ),
+    );
+  }
+}
+class CommunityRulePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('커뮤니티 이용규칙'),
+        backgroundColor: Color(0xFF6ACA89),
+      ),
+      body: Center(
+        child: Text('커뮤니티 이용규칙 페이지'),
+      ),
+    );
+  }
+}
+
+class ServiceAgreementPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('서비스 이용약관'),
+        backgroundColor: Color(0xFF6ACA89),
+      ),
+      body: Center(
+        child: Text('서비스 이용약관 페이지'),
+      ),
+    );
+  }
+}
