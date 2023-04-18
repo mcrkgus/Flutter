@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/cupertino.dart';
 
-const String _name = "KIMGAHYUN";
+const String _name = "KGH";
 
 // IOS용 테마
 final ThemeData kIOSTheme = ThemeData(
     primarySwatch: Colors.orange,
-    primaryColor: Colors.grey[100],
+    primaryColor: Colors.grey,
     primaryColorBrightness: Brightness.light);
 
 // 기본 테마
@@ -38,8 +38,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 // 화면 구성용 상태 위젯. 애니메이션 효과를 위해 TickerProviderStateMixin를 가짐
-class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin
-{
+class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   // 입력한 메시지를 저장하는 리스트
   final List<ChatMessage> _message = <ChatMessage>[];
 
@@ -48,7 +47,7 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin
 
   // 텍스트필드에 입력된 데이터의 존재 여부
   bool _isComposing = false;
-  ScrollController _listViewController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,17 +63,11 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin
             Flexible(
               // 리스트뷰 추가
               child: ListView.builder(
-                controller: _listViewController,
                 padding: const EdgeInsets.all(8.0),
                 // 리스트뷰의 스크롤 방향을 반대로 변경. 최신 메시지가 하단에 추가됨
                 reverse: true,
                 itemCount: _message.length,
-                //itemBuilder: (_, index) => _message[index],
-                itemBuilder: (BuildContext context, int index) {
-                  return ChatMessage(
-                    message: _message[index],
-                  );
-                },
+                itemBuilder: (_, index) => _message[index],
               ),
             ),
             // 구분선
@@ -148,7 +141,6 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin
     );
   }
 
-/*
   // 메시지 전송 버튼이 클릭될 때 호출
   void _handleSubmitted(String text) {
     // 텍스트 필드의 내용 삭제
@@ -156,7 +148,6 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin
     // _isComposing을 false로 설정
     setState(() {
       _isComposing = false;
-      //_message.insert(0, ChatMessage(text: text));
     });
     // 입력받은 텍스트를 이용해서 리스트에 추가할 메시지 생성
     ChatMessage message = ChatMessage(
@@ -171,47 +162,11 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin
     );
     // 리스트에 메시지 추가
     setState(() {
-      //_message.insert(0, ChatMessage(text: text));
       _message.insert(0, message);
     });
     // 위젯의 애니메이션 효과 발생
     message.animationController?.forward();
-  }*/
-  void _handleSubmitted(String text) {
-    // 텍스트 필드의 내용 삭제
-    _textController.clear();
-    // _isComposing을 false로 설정
-    setState(() {
-      _isComposing = false;
-    });
-
-    // 입력받은 텍스트를 이용해서 리스트에 추가할 메시지 생성
-    ChatMessage message = ChatMessage(
-      text: text,
-      animationController: AnimationController(
-        duration: Duration(milliseconds: 700),
-        vsync: this,
-      ),
-    );
-
-    // 리스트에 메시지 추가
-    setState(() {
-      _message.insert(0, message);
-    });
-
-    // 위젯의 애니메이션 효과 발생
-    message.animationController?.forward();
-
-    // ListView.builder를 다시 빌드하여 리스트 갱신
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      _listViewController.animateTo(
-        0.0,
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
-    });
   }
-
 
   @override
   void dispose() {
@@ -225,10 +180,8 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin
 
 // 리스브뷰에 추가될 메시지 위젯
 class ChatMessage extends StatelessWidget {
-  final String text = "Hello World!"; // 출력할 메시지 //데이터 가져와야함
-  final AnimationController? animationController;
-  // 리스트뷰에 등록될 때 보여질 효과
-
+  final String text = "Hello"; // 출력할 메시지
+  final AnimationController? animationController; // 리스트뷰에 등록될 때 보여질 효과
 
   ChatMessage({text, this.animationController});
 
@@ -256,11 +209,11 @@ class ChatMessage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  // 사용자명을 bodytext2 테마로 출력
+                  // 사용자명을 subhead 테마로 출력
                   Text(_name, style: Theme.of(context).textTheme.bodyText2),
                   // 입력받은 메시지 출력
                   Container(
-                    margin: const EdgeInsets.only(top: 20.0),
+                    margin: const EdgeInsets.only(top: 5.0),
                     child: Text(text),
                   ),
                 ],
