@@ -1,0 +1,701 @@
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/cupertino.dart';
+
+void main() => runApp(MyApp());
+
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "GoogleMap",
+      home: MyHomePage(),
+    );
+  }
+}
+
+
+//Main페이지
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Main Page"),
+        backgroundColor: Color(0xFF6ACA89),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => GoogleMapPage()),
+                );
+              },
+              child: Text("Google Map Page로 이동"),
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFF6ACA89),
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // '설정' 페이지로 이동
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Setting()),
+                );
+              },
+              child: Text("설정으로 이동"),
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFF6ACA89),
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // '학교 인증 페이지'로 이동
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Setting()),
+                );
+              },
+              child: Text("학교 인증 페이지로 이동"),
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFF6ACA89),
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // '채팅'로 이동
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Setting()),
+                );
+              },
+              child: Text("바로모임-채팅"),
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFF6ACA89),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+//Google Map Page에서 유저들 정보
+class PersonInfoWidget extends StatelessWidget {
+  final String nickname;
+  final int distance;
+  final bool arrived;
+
+  const PersonInfoWidget({required this.nickname, required this.distance, required this.arrived});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 60,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Icon(Icons.person),
+          Text(nickname),
+          Text('${distance.toStringAsFixed(0)}m'),
+          ElevatedButton(
+            onPressed: () {},
+            child: Text('이동중', style: TextStyle(fontSize: 11)),
+            style: ButtonStyle(
+              fixedSize: MaterialStateProperty.all(Size(4, 25)),
+              backgroundColor: MaterialStateProperty.all(Colors.blue),
+              foregroundColor: MaterialStateProperty.all(Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+//설정
+class Setting extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFF6ACA89),
+        title: Text('설정'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+      body: ListView(
+        children: [
+          ListTile(
+            title: Text('공지사항'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NoticePage()),
+              );
+            },
+          ),
+          Divider(
+            color: Colors.grey[400],
+            height: 1,
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
+          ListTile(
+            title: Text('Q&A'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => QAPage()),
+              );
+            },
+          ),
+          Divider(
+            color: Colors.grey[400],
+            height: 1,
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
+          ListTile(
+            title: Text('알림설정'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NotificationPage()),
+              );
+            },
+          ),
+          Divider(
+            color: Colors.grey[400],
+            height: 1,
+            thickness: 1,
+            indent: 20,
+            endIndent: 20,
+          ),
+          ListTile(
+            title: Text('커뮤니티 이용규칙'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CommunityRulePage()),
+              );
+            },
+          ),
+          Divider(
+            color: Colors.grey[400],
+            height: 1,
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
+          ListTile(
+            title: Text('서비스 이용약관'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ServiceAgreementPage()),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+//설정 -> 공지사항
+class NoticePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('공지사항'),
+        backgroundColor: Color(0xFF6ACA89),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+      body: Center(
+        child: Text('공지사항 페이지'),
+      ),
+    );
+  }
+}
+
+//설정 -> Q&A 페이지
+class QAPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Q&A'),
+        backgroundColor: Color(0xFF6ACA89),
+      ),
+      body: Center(
+        child: Text('Q&A 페이지'),
+      ),
+    );
+  }
+}
+class NotificationPage extends StatefulWidget {
+  @override
+  _NotificationPageState createState() => _NotificationPageState();
+}
+
+
+//설정 -> 알림설정
+class _NotificationPageState extends State<NotificationPage> {
+  bool _commentsSwitchValue = true; //댓글
+  bool _popularSwitchValue = true; //인기글
+  bool _chatSwitchValue = false; //채팅
+  bool _scheduleBriefingSwitchValue = true;   //일정 브리핑
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('알림설정'),
+        backgroundColor: Color(0xFF6ACA89),
+      ),
+      body: ListView(
+        children: [
+          ListTile(
+            title: Text('댓글'),
+            trailing: Switch(
+              value: _commentsSwitchValue,
+              onChanged: (value) {
+                setState(() {
+                  _commentsSwitchValue = value;
+                });
+              },
+            ),
+          ),
+          Divider(
+            color: Colors.grey[400],
+            height: 1,
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
+          ListTile(
+            title: Text('인기글'),
+            trailing: Switch(
+              value: _popularSwitchValue,
+              onChanged: (value) {
+                setState(() {
+                  _popularSwitchValue = value;
+                });
+              },
+            ),
+          ),
+          Divider(
+            color: Colors.grey[400],
+            height: 1,
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
+          ListTile(
+            title: Text('채팅'),
+            trailing: Switch(
+              value: _chatSwitchValue,
+              onChanged: (value) {
+                setState(() {
+                  _chatSwitchValue = value;
+                });
+              },
+            ),
+          ),
+          Divider(
+            color: Colors.grey[400],
+            thickness: 2,
+            indent: 10,
+            endIndent: 10,
+          ),
+
+          ListTile(
+            title: Text('일정 브리핑'),
+            trailing: Switch(
+              value: _scheduleBriefingSwitchValue,
+              onChanged: (value) {
+                setState(() {
+                  _scheduleBriefingSwitchValue = value;
+                });
+              },
+            ),
+          ),
+          Divider(
+            color: Colors.grey[400],
+            height: 1,
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+//설정 -> 커뮤니티 이용규칙
+class CommunityRulePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('커뮤니티 이용규칙'),
+        backgroundColor: Color(0xFF6ACA89),
+      ),
+      body: Center(
+        child: Text('커뮤니티 이용규칙 페이지'),
+      ),
+    );
+  }
+}
+//설정 -> 서비스 이용약관
+class ServiceAgreementPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('서비스 이용약관'),
+        backgroundColor: Color(0xFF6ACA89),
+      ),
+      body: Center(
+        child: Text('서비스 이용약관 페이지'),
+      ),
+    );
+  }
+}
+
+//구글맵 + 유저 위치 정보
+class GoogleMapPage extends StatelessWidget {
+  List<PersonInfoWidget> people = [
+    PersonInfoWidget(nickname: "AAA", distance: 50, arrived: true),
+    PersonInfoWidget(nickname: "BBB", distance: 250, arrived: true),
+    PersonInfoWidget(nickname: "CCC", distance: 150, arrived: true),
+    PersonInfoWidget(nickname: "DDD", distance: 200, arrived: false),
+    PersonInfoWidget(nickname: "EEE", distance: 100, arrived: false),
+    PersonInfoWidget(nickname: "FFF", distance: 80, arrived: false),
+    PersonInfoWidget(nickname: "GGG", distance: 300, arrived: false),
+    PersonInfoWidget(nickname: "HHH", distance: 120, arrived: false),
+  ];
+  final Set<Marker> _markers = {}; //지도 위 마크 표시
+  //const GoogleMapPage({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    // final screenHeight = MediaQuery.of(context).size.height;
+    // final halfScreenHeight = screenHeight / 2.0;
+
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("현재 모임 상황"),
+          backgroundColor: Color(0xFF6ACA89),
+        ),
+      body: Column(
+          children: [
+            SizedBox(height: 10),
+            Container(
+              height: 220,
+              child: ListView.builder(
+                itemCount: people.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return PersonInfoWidget(
+                    nickname: people[index].nickname,
+                    distance: people[index].distance,
+                    arrived: people[index].arrived,
+                  );
+                },
+              ),
+            ),
+            /*
+            PersonInfoWidget(nickname: "AAA", distance: 50, arrived: true,),
+            PersonInfoWidget(nickname: "BBB", distance: 250, arrived: true,),
+            PersonInfoWidget(nickname: "CCC", distance: 150, arrived: true,),
+*/
+            SizedBox(height: 25),
+
+            Container(
+              height: 400,
+              child: GoogleMap(
+                mapType: MapType.normal, // 지도 유형
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(36.8340603, 127.1792514),
+                  zoom: 17.5, // 지도 초기 줌 레벨
+                ),
+                markers: _markers,
+                onMapCreated: (GoogleMapController controller) {
+                  // 지도 컨트롤러
+                },
+              ),
+
+            ),
+          ],
+        ),
+    );
+  }
+}
+
+
+//바로모임 -> 채팅
+// IOS용 테마
+final ThemeData kIOSTheme = ThemeData(
+    primarySwatch: Colors.orange,
+    primaryColor: Colors.grey[100],
+    primaryColorBrightness: Brightness.light);
+
+// 기본 테마
+final ThemeData kDefaultTheme = ThemeData(
+  primarySwatch: Colors.pink,
+  // 전송버튼에 적용할 색상으로 이용
+  accentColor: Colors.orangeAccent,
+);
+
+class FriendlychatApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: '채팅',
+      home: ChatScreen(),
+      // defaultTargetPlatform을 사용하기 위해서는 foundation.dart 패키지의 추가 필요
+      theme: defaultTargetPlatform == TargetPlatform.iOS
+          ? kIOSTheme
+          : kDefaultTheme,
+    );
+  }
+}
+
+
+class ChatScreen extends StatefulWidget {
+  ChatScreenState createState() => ChatScreenState();
+}
+// 화면 구성용 상태 위젯. 애니메이션 효과를 위해 TickerProviderStateMixin를 가짐
+class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin
+{
+  // 입력한 메시지를 저장하는 리스트
+  final List<ChatMessage> _message = <ChatMessage>[];
+
+  // 텍스트필드 제어용 컨트롤러
+  final TextEditingController _textController = TextEditingController();
+
+  // 텍스트필드에 입력된 데이터의 존재 여부
+  bool _isComposing = false;
+  ScrollController _listViewController = ScrollController();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('채팅'),
+        // appBar 하단의 그림자 정도
+        elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 6.0,
+      ),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            // 리스트뷰를 Flexible로 추가.
+            Flexible(
+              // 리스트뷰 추가
+              child: ListView.builder(
+                controller: _listViewController,
+                padding: const EdgeInsets.all(8.0),
+                // 리스트뷰의 스크롤 방향을 반대로 변경. 최신 메시지가 하단에 추가됨
+                reverse: true,
+                itemCount: _message.length,
+                //itemBuilder: (_, index) => _message[index],
+                itemBuilder: (BuildContext context, int index) {
+                  return ChatMessage(
+                    message: _message[index],
+                  );
+                },
+              ),
+            ),
+            // 구분선
+            Divider(height: 1.0),
+            // 메시지 입력을 받은 위젯(_buildTextCompose)추가
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+              ),
+              child: _buildTextComposer(),
+            )
+          ],
+        ),
+        // iOS의 경우 데코레이션 효과 적용
+        decoration: Theme.of(context).platform == TargetPlatform.iOS
+            ? BoxDecoration(
+            border: Border(top: BorderSide(color: Colors.grey)))
+            : null,
+      ),
+    );
+  }
+
+  // 사용자로부터 메시지를 입력받는 위젯 선언
+  Widget _buildTextComposer() {
+    return IconTheme(
+      data: IconThemeData(color: Theme.of(context).accentColor),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Row(
+          children: <Widget>[
+            // 텍스트 입력 필드
+            Flexible(
+              child: TextField(
+                controller: _textController,
+                // 입력된 텍스트에 변화가 있을 때 마다
+                onChanged: (text) {
+                  setState(() {
+                    _isComposing = text.length > 0;
+                  });
+                },
+                // 키보드상에서 확인을 누를 경우. 입력값이 있을 때에만 _handleSubmitted 호출
+                onSubmitted: _isComposing ? _handleSubmitted : null,
+                // 텍스트 필드에 힌트 텍스트 추가
+                decoration:
+                InputDecoration.collapsed(hintText: "Send a message"),
+              ),
+            ),
+            // 전송 버튼
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 4.0),
+              // 플랫폼 종류에 따라 적당한 버튼 추가
+              child: Theme.of(context).platform == TargetPlatform.iOS
+                  ? CupertinoButton(
+                child: Text("send"),
+                onPressed: _isComposing
+                    ? () => _handleSubmitted(_textController.text)
+                    : null,
+              )
+                  : IconButton(
+                // 아이콘 버튼에 전송 아이콘 추가
+                icon: Icon(Icons.send),
+                // 입력된 텍스트가 존재할 경우에만 _handleSubmitted 호출
+                onPressed: _isComposing
+                    ? () => _handleSubmitted(_textController.text)
+                    : null,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  void _handleSubmitted(String text) {
+    // 텍스트 필드의 내용 삭제
+    _textController.clear();
+    // _isComposing을 false로 설정
+    setState(() {
+      _isComposing = false;
+    });
+
+    // 입력받은 텍스트를 이용해서 리스트에 추가할 메시지 생성
+    ChatMessage message = ChatMessage(
+      text: text,
+      animationController: AnimationController(
+        duration: Duration(milliseconds: 700),
+        vsync: this,
+      ),
+    );
+
+    // 리스트에 메시지 추가
+    setState(() {
+      _message.insert(0, message);
+    });
+
+    // 위젯의 애니메이션 효과 발생
+    message.animationController?.forward();
+
+    // ListView.builder를 다시 빌드하여 리스트 갱신
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _listViewController.animateTo(
+        0.0,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    });
+  }
+
+
+  @override
+  void dispose() {
+    // 메시지가 생성될 때마다 animationController가 생성/부여 되었으므로 모든 메시지로부터 animationController 해제
+    for (ChatMessage message in _message) {
+      message.animationController?.dispose();
+    }
+    super.dispose();
+  }
+}
+
+// 리스브뷰에 추가될 메시지 위젯
+class ChatMessage extends StatelessWidget {
+  final String text = "Hello World!"; // 출력할 메시지 //데이터 가져와야함
+  final AnimationController? animationController;
+  // 리스트뷰에 등록될 때 보여질 효과
+
+
+  ChatMessage({text, this.animationController});
+
+  @override
+  Widget build(BuildContext context) {
+    // 위젯에 애니메이션을 발생하기 위해 SizeTransition을 추가
+    return SizeTransition(
+      // 사용할 애니메이션 효과 설정
+      sizeFactor:
+      CurvedAnimation(parent: animationController!, curve: Curves.easeOut),
+      axisAlignment: 0.0,
+      // 리스트뷰에 추가될 컨테이너 위젯
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 10.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.only(right: 16.0),
+              // 사용자명의 첫번째 글자를 서클 아바타로 표시
+              child: CircleAvatar(child: Text(_name[0])),
+            ),
+            Expanded(
+              // 컬럼 추가
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  // 사용자명을 bodytext2 테마로 출력
+                  Text(_name, style: Theme.of(context).textTheme.bodyText2),
+                  // 입력받은 메시지 출력
+                  Container(
+                    margin: const EdgeInsets.only(top: 20.0),
+                    child: Text(text),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
