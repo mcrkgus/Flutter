@@ -1,8 +1,12 @@
-import 'package:flutter/material.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
 
 void main() => runApp(MyApp());
-
+//const String _name = "KIMGAHYUN";
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -44,7 +48,6 @@ class MyHomePage extends StatelessWidget {
                 primary: Color(0xFF6ACA89),
               ),
             ),
-
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
@@ -59,13 +62,86 @@ class MyHomePage extends StatelessWidget {
                 primary: Color(0xFF6ACA89),
               ),
             ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // '학교 인증 페이지'로 이동
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Setting()),
+                );
+              },
+              child: Text("학교 인증 페이지로 이동"),
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFF6ACA89),
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // '채팅'로 이동
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FriendlychatApp()),
+                );
+              },
+              child: Text("바로모임-채팅"),
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFF6ACA89),
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // '채팅'로 이동
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FriendlychatApp()),
+                );
+              },
+              child: Text("같이타자-채팅"),
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFF6ACA89),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 }
+//Google Map Page에서 유저들 정보
+class PersonInfoWidget extends StatelessWidget {
+  final String nickname;
+  final int distance;
+  final bool arrived;
 
+  const PersonInfoWidget({required this.nickname, required this.distance, required this.arrived});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 60,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Icon(Icons.person),
+          Text(nickname),
+          Text('${distance.toStringAsFixed(0)}m'),
+          ElevatedButton(
+            onPressed: () {},
+            child: Text('이동중', style: TextStyle(fontSize: 11)),
+            style: ButtonStyle(
+              fixedSize: MaterialStateProperty.all(Size(4, 25)),
+              backgroundColor: MaterialStateProperty.all(Colors.blue),
+              foregroundColor: MaterialStateProperty.all(Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 //설정
 class Setting extends StatelessWidget {
@@ -163,7 +239,6 @@ class Setting extends StatelessWidget {
   }
 }
 
-
 //설정 -> 공지사항
 class NoticePage extends StatelessWidget {
   @override
@@ -185,6 +260,7 @@ class NoticePage extends StatelessWidget {
     );
   }
 }
+
 //설정 -> Q&A 페이지
 class QAPage extends StatelessWidget {
   @override
@@ -211,7 +287,7 @@ class _NotificationPageState extends State<NotificationPage> {
   bool _commentsSwitchValue = true; //댓글
   bool _popularSwitchValue = true; //인기글
   bool _chatSwitchValue = false; //채팅
-  bool _scheduleBriefingSwitchValue = true;   //일정 브리칭
+  bool _scheduleBriefingSwitchValue = true;   //일정 브리핑
 
   @override
   Widget build(BuildContext context) {
@@ -334,7 +410,18 @@ class ServiceAgreementPage extends StatelessWidget {
 
 //구글맵 + 유저 위치 정보
 class GoogleMapPage extends StatelessWidget {
-  const GoogleMapPage({Key? key}) : super(key: key);
+  List<PersonInfoWidget> people = [
+    PersonInfoWidget(nickname: "AAA", distance: 50, arrived: true),
+    PersonInfoWidget(nickname: "BBB", distance: 250, arrived: true),
+    PersonInfoWidget(nickname: "CCC", distance: 150, arrived: true),
+    PersonInfoWidget(nickname: "DDD", distance: 200, arrived: false),
+    PersonInfoWidget(nickname: "EEE", distance: 100, arrived: false),
+    PersonInfoWidget(nickname: "FFF", distance: 80, arrived: false),
+    PersonInfoWidget(nickname: "GGG", distance: 300, arrived: false),
+    PersonInfoWidget(nickname: "HHH", distance: 120, arrived: false),
+  ];
+  final Set<Marker> _markers = {}; //지도 위 마크 표시
+  //const GoogleMapPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     // final screenHeight = MediaQuery.of(context).size.height;
@@ -345,95 +432,43 @@ class GoogleMapPage extends StatelessWidget {
           title: Text("현재 모임 상황"),
           backgroundColor: Color(0xFF6ACA89),
         ),
-        body: Column(
+      body: Column(
           children: [
-            // SizedBox(height: 5),
-            Expanded(
-                child: DataTable(
-                  //columnSpacing: 10.0,
-                    columns: [
-                      DataColumn(label: SizedBox(height: 3)),
-                      DataColumn(label: SizedBox(height: 3)),
-                      DataColumn(label: SizedBox(height: 3)),
-                      DataColumn(label: SizedBox(height: 3)),
-                    ],
-                    rows: [
-                DataRow(
-                cells: [
-                DataCell(Icon(Icons.person)),
-            DataCell(Text('LJW')),
-            DataCell(Text('13m')),
-            DataCell(SizedBox(
-              width: 70,
-              child: ElevatedButton(
-                onPressed: () {},
-                // 도착, 이동중 여부는 distance m에 따라 나뉨
-                child: Text('도착', style: TextStyle(fontSize: 12)),
-                style: ButtonStyle(
-                  fixedSize: MaterialStateProperty.all(Size(50, 25)),
-                  backgroundColor: MaterialStateProperty.all(Color.fromRGBO(
-                      255, 211, 0, 1.0)),
-                  foregroundColor: MaterialStateProperty.all(Colors.white),
-                ),
+            SizedBox(height: 10),
+            Container(
+              height: 220,
+              child: ListView.builder(
+                itemCount: people.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return PersonInfoWidget(
+                    nickname: people[index].nickname,
+                    distance: people[index].distance,
+                    arrived: people[index].arrived,
+                  );
+                },
               ),
-            )),
-          ],
-        ),
-        DataRow(
-          cells: [
-            DataCell(Icon(Icons.person)),
-            DataCell(Text('JAY')),
-            DataCell(Text('210m')),
-            DataCell(SizedBox(
-              width: 70,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: Text('이동중', style: TextStyle(fontSize: 12)),
-                style: ButtonStyle(
-                  fixedSize: MaterialStateProperty.all(Size(50, 25)),
-                  backgroundColor: MaterialStateProperty.all(Colors.blue),
-                  foregroundColor: MaterialStateProperty.all(Colors.white),
-                ),
-              ),
-            )),
-          ],
-        ),
-        DataRow(
-            cells: [
-            DataCell(Icon(Icons.person)),
-    DataCell(Text('KGH')),
-    DataCell(Text('80m')),
-    DataCell(SizedBox(
-    width: 70,
-    child: ElevatedButton(
-    onPressed: () {},
-    child: Text('이동중', style: TextStyle(fontSize: 12)),
-      style: ButtonStyle(
-        fixedSize: MaterialStateProperty.all(Size(5, 25)),
-        backgroundColor: MaterialStateProperty.all(Colors.blue),
-        foregroundColor: MaterialStateProperty.all(Colors.white),
-      ),
-    ),
-    )),
-            ],
-        ),
-                    ],
-                  dividerThickness: 1,
-                  //dividerColor: Colors.grey,
-                ),
             ),
+            /*
+            PersonInfoWidget(nickname: "AAA", distance: 50, arrived: true,),
+            PersonInfoWidget(nickname: "BBB", distance: 250, arrived: true,),
+            PersonInfoWidget(nickname: "CCC", distance: 150, arrived: true,),
+*/
+            SizedBox(height: 25),
+
             Container(
               height: 400,
               child: GoogleMap(
                 mapType: MapType.normal, // 지도 유형
                 initialCameraPosition: CameraPosition(
-                  target: LatLng(37.43296265331129, -122.08832357078792),
-                  zoom: 15.0, // 지도 초기 줌 레벨
+                  target: LatLng(36.8340603, 127.1792514),
+                  zoom: 17.5, // 지도 초기 줌 레벨
                 ),
+                markers: _markers,
                 onMapCreated: (GoogleMapController controller) {
                   // 지도 컨트롤러
                 },
               ),
+
             ),
           ],
         ),
@@ -442,3 +477,201 @@ class GoogleMapPage extends StatelessWidget {
 }
 
 
+const String _name = "Name";
+
+class FriendlychatApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "FriendlychatApp",
+      home: ChatScreen(),
+    );
+  }
+}
+
+class ChatScreen extends StatefulWidget {
+  @override
+  State createState() => ChatScreenState();
+}
+
+class ChatScreenState extends State<ChatScreen> {
+  final List<ChatMessage> _messages = <ChatMessage>[];
+  final TextEditingController _textController = new TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("택시 채팅"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            // 뒤로가기 버튼을 눌렀을 때 실행될 코드
+          },
+        ),
+        backgroundColor: Color(0xFF6ACA89), // 색상 설정
+      ),
+      body: Column(
+        children: <Widget>[
+          SizedBox(height:10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: FloatingActionButton.extended(
+                    onPressed: () {},
+                    label: Container(
+                      width: 60,
+                      child: Text( '위치공유',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ),
+                    backgroundColor: Color(0xFF6ACA89),
+                    heroTag: null,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: FloatingActionButton.extended(
+                    onPressed: (){},
+                    label: Container(
+                      width: 60,
+                      child: Text( '정산하기',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ),
+                    backgroundColor: Color(0xFF6ACA89),
+                    heroTag: null,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: FloatingActionButton.extended(
+                    onPressed: () {},
+                    label: Container(
+                      width: 60,
+                      child: Text( '모임일정',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ),
+                    backgroundColor: Color(0xFF6ACA89),
+                    heroTag: null,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Flexible(
+            child: ListView.builder(
+              padding: EdgeInsets.all(8.0),
+              reverse: true,
+              itemBuilder: (_, int index) => _messages[index],
+              itemCount: _messages.length,
+            ),
+          ),
+          Divider(height: 1.0),
+          Container(
+            decoration: BoxDecoration(
+                color: Theme.of(context).cardColor
+            ),
+            child: _buildTextComposer(),
+          ),
+          SizedBox(height:10),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTextComposer() {
+    return IconTheme(
+      data: IconThemeData(color: Colors.black),
+      child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Row(
+            children: <Widget>[
+              Flexible(
+                child: TextField(
+                  controller: _textController,
+                  onSubmitted: _handleSubmitted,
+                  decoration: new InputDecoration.collapsed(
+                      hintText: "Send a message"),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                child: IconButton(
+                    icon: Icon(Icons.send),
+                    onPressed: () => _handleSubmitted(_textController.text)),
+              ),
+            ],
+          )
+      ),
+    );
+  }
+
+  void _handleSubmitted(String text) {
+    _textController.clear();
+    var message = ChatMessage(
+      text: text,
+    );
+    setState(() {
+      _messages.insert(0, message);
+    });
+  }
+
+/*void _addInfoMessage() {
+    var infoMessage = ChatMessage(
+      text: "정산시작",
+      icon: Icon(Icons.info),
+    );
+
+    setState(() {
+      _messages.insert(0, infoMessage);
+    });
+
+  }*/
+
+
+
+}
+
+class ChatMessage extends StatelessWidget {
+  ChatMessage({this.text, this.icon});
+  final String? text;
+  final Icon? icon;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            margin: const EdgeInsets.only(right: 16.0),
+            child: CircleAvatar(child: Text(_name[0])),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              if (icon!=null) icon!,
+              Text(_name, style: Theme.of(context).textTheme.bodyText1),
+              Container(
+                margin: const EdgeInsets.only(top: 5.0),
+                child: Text(text!),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
