@@ -1,9 +1,7 @@
-
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 
 void main() => runApp(MyApp());
 //const String _name = "KIMGAHYUN";
@@ -91,7 +89,7 @@ class MyHomePage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            ElevatedButton(
+            /*ElevatedButton(
               onPressed: () {
                 // '채팅'로 이동
                 Navigator.push(
@@ -103,7 +101,7 @@ class MyHomePage extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 primary: Color(0xFF6ACA89),
               ),
-            ),
+            ),*/
           ],
         ),
       ),
@@ -448,13 +446,7 @@ class GoogleMapPage extends StatelessWidget {
                 },
               ),
             ),
-            /*
-            PersonInfoWidget(nickname: "AAA", distance: 50, arrived: true,),
-            PersonInfoWidget(nickname: "BBB", distance: 250, arrived: true,),
-            PersonInfoWidget(nickname: "CCC", distance: 150, arrived: true,),
-*/
             SizedBox(height: 25),
-
             Container(
               height: 400,
               child: GoogleMap(
@@ -501,15 +493,16 @@ class ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("택시 채팅"),
+      appBar:
+      AppBar(
+        backgroundColor: Color(0xFF6ACA89),
+        title: Text('같이타자 채팅'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            // 뒤로가기 버튼을 눌렀을 때 실행될 코드
+            Navigator.of(context).pop();
           },
         ),
-        backgroundColor: Color(0xFF6ACA89), // 색상 설정
       ),
       body: Column(
         children: <Widget>[
@@ -521,7 +514,11 @@ class ChatScreenState extends State<ChatScreen> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: FloatingActionButton.extended(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => GoogleMapPage()),
+                    );},
                     label: Container(
                       width: 60,
                       child: Text( '위치공유',
@@ -538,24 +535,44 @@ class ChatScreenState extends State<ChatScreen> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: FloatingActionButton.extended(
-                    onPressed: (){},
-                    label: Container(
-                      width: 60,
-                      child: Text( '정산하기',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ),
-                    backgroundColor: Color(0xFF6ACA89),
-                    heroTag: null,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: FloatingActionButton.extended(
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('모임'),
+                            content: Container(
+                              width: double.maxFinite,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    '시간: 18:30 PM',
+                                    //'배고파',
+                                    style : TextStyle(fontSize: 18),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    '장소: 안서 동보 앞 GS25',
+                                    //'배고프다고',
+                                    style : TextStyle(fontSize: 18),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('닫기'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
                     label: Container(
                       width: 60,
                       child: Text( '모임일정',
@@ -627,21 +644,6 @@ class ChatScreenState extends State<ChatScreen> {
       _messages.insert(0, message);
     });
   }
-
-/*void _addInfoMessage() {
-    var infoMessage = ChatMessage(
-      text: "정산시작",
-      icon: Icon(Icons.info),
-    );
-
-    setState(() {
-      _messages.insert(0, infoMessage);
-    });
-
-  }*/
-
-
-
 }
 
 class ChatMessage extends StatelessWidget {
