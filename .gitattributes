@@ -1,1 +1,2 @@
 *.js linguist-detectable=false 
+*.flutter linguist-detectable=true
