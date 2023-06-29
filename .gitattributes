@@ -1,2 +1,2 @@
-*.flutter linguist-detectable=true
-*.js linguist-detectable=false
+*.flutter linguist-vendored
+*.js linguist-vendored=false
